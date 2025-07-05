@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 function HomeCard({ category, image, professions }) {
-  console.log(professions);
+  
 
   return (
     <div className="flex bg-pink-50 shadow-md rounded-2xl p-4 m-4 hover:shadow-lg transition duration-300">
