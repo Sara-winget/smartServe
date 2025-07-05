@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const categoryData = {
   "Health & Wellness": [
     "Nutritionist", "Dietitian", "Dermatologist", "Physiotherapist",
@@ -81,6 +82,7 @@ const SignUp = () => {
     identityProof: null,
     resume: null
   });
+  const navigate=useNavigate()
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -105,6 +107,8 @@ const SignUp = () => {
     }
 
     console.log('Submitted:', { role, ...formData });
+
+    navigate('/')
     // Send to backend with FormData if needed
   };
 
@@ -187,6 +191,10 @@ const SignUp = () => {
         )}
 
         <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">Sign Up</button>
+         <p className="mt-4 text-center text-sm text-gray-600">
+         already have an account?
+          <Link to="/login" className="text-blue-600 hover:underline ml-1">login</Link>
+        </p>
       </form>
     </div>
   );
