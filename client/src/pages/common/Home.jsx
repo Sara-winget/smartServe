@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import HomeCard from '../../components/common/HomeCard';
 import { FiBell } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 function Home() {
+    const nav=useNavigate()
     const categoryData = [
   {
     category: "Health & Wellness",
@@ -217,7 +219,7 @@ const [hasNotification, setHasNotification] = useState(false);
 </div>
 
   {/* Profile */}
-  <h6 className="text-sm text-gray-700">Profile</h6>
+  <h6 className="text-sm text-gray-700" onClick={()=>nav('/profile')}>Profile</h6>
 </div>
 
 
