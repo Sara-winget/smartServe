@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 function HomeCard({ category, image, professions }) {
   console.log(professions);
 
@@ -17,12 +17,13 @@ function HomeCard({ category, image, professions }) {
         <h1 className="text-xl font-semibold text-pink-800 mb-2">{category}</h1>
         <div className="flex flex-wrap gap-2">
           {professions.map((data, ind) => (
-            <span
-              key={ind}
-              className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm shadow-sm hover:bg-purple-200 transition"
-            >
-              {data.name}
-            </span>
+            <Link
+  key={ind}
+  to={`/profession/${encodeURIComponent(data.name.toLowerCase())}`}
+  className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm shadow-sm hover:bg-purple-200 transition"
+>
+  {data.name}
+</Link>
           ))}
         </div>
       </div>
