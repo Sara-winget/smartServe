@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HomeCard from '../../components/common/HomeCard';
-
+import { FiBell } from 'react-icons/fi';
 function Home() {
     const categoryData = [
   {
@@ -198,19 +198,28 @@ function Home() {
     ]
   }
 ];
-
+const [hasNotification, setHasNotification] = useState(false); 
   return (
     <div  >
-      <div className="flex items-center justify-between px-4 py-2 bg-white shadow-md">
+    <div className="flex items-center justify-between px-4 py-2 bg-white shadow-md">
+  {/* Logo */}
   <h1 className="text-2xl font-bold text-purple-700">Smart Serve</h1>
 
-  <div className="flex flex-1 mx-4 items-center bg-purple-50 rounded-md px-2 py-1">
-    <div className="bg-gray-200 h:full w-30">Search</div>
-    <div className="flex-grow"></div>
+  {/* Search Bar */}
+  <div className="flex items-center bg-purple-50 rounded-md px-3 py-2 mx-4 w-100">
+    <span className="text-gray-500 text-sm">Search</span>
   </div>
-
-  <h6 className="text-sm text-gray-700">Dashboard</h6>
+  <div className="relative mx-2">
+  <FiBell className="text-xl text-gray-700 cursor-pointer" />
+        {hasNotification && (
+          <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+        )}
 </div>
+
+  {/* Profile */}
+  <h6 className="text-sm text-gray-700">Profile</h6>
+</div>
+
 
 <div>
 
