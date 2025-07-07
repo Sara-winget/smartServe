@@ -8,4 +8,4 @@ const professionCategorySchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-export default mongoose.model('ProfessionCategory', professionCategorySchema);
+export default mongoose.model('professionCategory', professionCategorySchema);
