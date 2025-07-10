@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "smartServe",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
