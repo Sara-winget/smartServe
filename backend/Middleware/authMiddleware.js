@@ -1,6 +1,6 @@
 // middlewares/authMiddleware.js
 import jwt from 'jsonwebtoken';
-import user from '../models/user.js';
+import User from '../models/user.js';
 import ErrorHandler from '../utils/errorhandler.js';
 
 export const isAuthenticated = async (req, res, next) => {

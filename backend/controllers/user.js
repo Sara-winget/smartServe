@@ -72,6 +72,14 @@ export const refresh = async (req, res, next) => {
   }
 };
 
+
+
+export const getProfile = (req, res, next) => {
+  res.status(200).json({
+    user: req.user
+  });
+};
+
 // LOGOUT
 export const logout = async (req, res, next) => {
   const token = req.cookies.refreshToken;

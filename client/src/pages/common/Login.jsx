@@ -1,25 +1,42 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMail, FiLock } from 'react-icons/fi';
+import api from '../../api/axios';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    return(
-        navigate('/')
-    )
-    console.log('Login submitted:', { email, password });
+
+    try {
+      // Login API call
+      const { data } = await api.post('/auth/login', { email, password });
+
+      // Set access token first (user = null for now)
+      login(data.accessToken, null);
+
+      // Now safely fetch the profile (token is set in header)
+      const profileRes = await api.get('/auth/profile');
+      console.log(profileRes.data)
+      // Update user in context
+      login(data.accessToken, profileRes.data.user);
+
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login to Your Account</h2>
-        
+
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block mb-1 text-gray-600" htmlFor="email">Email</label>

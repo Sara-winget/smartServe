@@ -1,26 +1,49 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { AuthProvider,useAuth } from './context/AuthContext';
 import { BrowserRouter as Router, Routes , Route } from 'react-router-dom';
 import { Home,Login,SignUp,Proffesion,UserDashboard } from './Routes';
-function App() {
+import ProtectedRoute from './components/common/ProtectedRoute';
+import { setupInterceptors } from './api/axios';
+import { useEffect } from 'react';
 
+
+function AppContent() {
+  const auth = useAuth();
+
+  useEffect(() => {
+    setupInterceptors(auth);
+  }, [auth]);
 
   return (
-    <>
-        <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/profession/:professionName" element={<Proffesion />} />
-        <Route path="/profile" element={<UserDashboard />} />
-       
-
-      </Routes>
-    </Router>
-    </>
-  )
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/profession/:professionName" element={<Proffesion />} />
+      
+      <Route path="/" element={
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <UserDashboard />
+        </ProtectedRoute>
+      } />
+    </Routes>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
+  );
+}
+
+export default App;
+

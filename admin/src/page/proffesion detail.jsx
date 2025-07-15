@@ -13,7 +13,6 @@ const uploadProfessionData = async () => {
 };
 
 
-
 function Proffesiondetail() {
   return (
     <div>
