@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
   },
   phone: {
     type: String,
-    required: true
+    
   },
   password: {
     type: String,
@@ -53,7 +53,12 @@ const userSchema = mongoose.Schema({
   isVerified: {
     type: Boolean,
     default: false
+  },
+    refreshToken: {
+    type: String,
+    default: ''
   }
 }, { timestamps: true });
 
-export default mongoose.model('user', userSchema);
+const User= mongoose.model('user', userSchema);
+export default User
