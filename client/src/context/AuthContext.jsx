@@ -1,12 +1,11 @@
-// src/context/AuthContext.js
 import { createContext, useContext, useState, useEffect } from "react";
-import api from "../api/axios";
+import api, { setAccessToken } from "../api/axios";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const login = (token, user) => {
     setAccessToken(token);
@@ -14,30 +13,30 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setAccessToken("");
+    setAccessToken(null);
     setCurrentUser(null);
   };
 
-  useEffect(() => {
-    const tryRefresh = async () => {
-      try {
-        const res = await api.get("/auth/refresh");
-        setAccessToken(res.data.accessToken);
+ useEffect(() => {
+  const tryRefresh = async () => {
+    try {
+      const res = await api.get("/auth/refresh");
+      setAccessToken(res.data.accessToken);
+      const profile = await api.get("/auth/profile");
+      setCurrentUser(profile.data.user);
+    } catch {
+      console.log("No valid refresh token. Staying logged out.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        const profile = await api.get("/auth/profile");
-        setCurrentUser(profile.data.user);
-      } catch (err) {
-        console.log("No valid refresh token. User needs to login.");
-        setAccessToken("");
-        setCurrentUser(null);
-      }
-    };
+  tryRefresh();
+}, []);
 
-    tryRefresh();
-  }, []);
 
   return (
-    <AuthContext.Provider value={{ accessToken, currentUser, login, logout }}>
+    <AuthContext.Provider value={{ currentUser, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

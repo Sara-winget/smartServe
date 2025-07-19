@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import api from '../../api/axios';
 const categoryData = {
   "Health & Wellness": [
     "Nutritionist", "Dietitian", "Dermatologist", "Physiotherapist",
@@ -89,28 +90,56 @@ const SignUp = () => {
     setFormData({ ...formData, [name]: files ? files[0] : value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!role) {
-      alert('Please choose a role');
+  if (!role) {
+    alert('Please choose a role');
+    return;
+  }
+
+  if (role === 'provider') {
+    const required = ['name', 'email', 'phone', 'password', 'gender', 'category', 'profession', 'about', 'profilePic', 'identityProof'];
+    const missing = required.find(field => !formData[field]);
+    if (missing) {
+      alert(`Please fill all required provider fields (${missing})`);
       return;
     }
+  }
+
+  try {
+    const form = new FormData();
+    form.append('name', formData.name);
+    form.append('email', formData.email);
+    form.append('phone', formData.phone);
+    form.append('password', formData.password);
+    form.append('role', role);
 
     if (role === 'provider') {
-      const required = ['name', 'email', 'phone', 'password', 'gender', 'category', 'profession', 'about', 'profilePic', 'identityProof'];
-      const missing = required.find(field => !formData[field]);
-      if (missing) {
-        alert(`Please fill all required provider fields (${missing})`);
-        return;
+      form.append('gender', formData.gender);
+      form.append('category', formData.category);
+      form.append('profession', formData.profession);
+      form.append('about', formData.about);
+      form.append('profilePic', formData.profilePic);
+      form.append('identityProof', formData.identityProof);
+      if (formData.resume) {
+        form.append('resume', formData.resume);
       }
     }
 
-    console.log('Submitted:', { role, ...formData });
+    const { data } = await api.post('/auth/signup', form, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
 
-    navigate('/')
-    // Send to backend with FormData if needed
-  };
+    console.log(data);
+    navigate('/login');
+  } catch (err) {
+    console.error(err);
+    alert('Signup failed');
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center px-4">
@@ -190,7 +219,7 @@ const SignUp = () => {
           </>
         )}
 
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">Sign Up</button>
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700" >Sign Up</button>
          <p className="mt-4 text-center text-sm text-gray-600">
          already have an account?
           <Link to="/login" className="text-blue-600 hover:underline ml-1">login</Link>
