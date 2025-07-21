@@ -1,8 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HomeCard from '../../components/common/HomeCard';
 import { FiBell } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import api from '../../api/axios';
 function Home() {
+const [categoryData,setCategoryData] = useState([])
+  useEffect(
+()=>{
+  const fetch = async()=>{
+  const {data}=await api.get('/proffesion/getService')
+  console.log(data)
+  setCategoryData(data)
+}
+fetch()
+},[]
+  )
     const nav=useNavigate()
     
 const [hasNotification, setHasNotification] = useState(false); 
@@ -32,10 +45,10 @@ const [hasNotification, setHasNotification] = useState(false);
 
 
  
-{/* 
+
   {categoryData.map((data ,ind)=> (
-    <HomeCard  key={ind} category={data.category} image={data.image} professions={data.professions}/>
-  ))} */}
+    <HomeCard  key={ind} category={data.category}  professions={data.professions}/>
+  ))}
 
 
 </div>
