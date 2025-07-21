@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-function HomeCard({ category, image, professions }) {
+function HomeCard({ category, professions }) {
   
 
   return (
     <div className="flex bg-pink-50 shadow-md rounded-2xl p-4 m-4 hover:shadow-lg transition duration-300">
-      <div className="w-1/3">
+      {/* <div className="w-1/3">
         <img
           src={image}
           alt={category}
           className="w-full h-32 object-cover rounded-xl"
         />
-      </div>
+      </div> */}
 
       <div className="w-2/3 pl-4 flex flex-col justify-center">
         <h1 className="text-xl font-semibold text-pink-800 mb-2">{category}</h1>

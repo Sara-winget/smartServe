@@ -3,16 +3,14 @@ import { AuthProvider,useAuth } from './context/AuthContext';
 import { BrowserRouter as Router, Routes , Route } from 'react-router-dom';
 import { Home,Login,SignUp,Proffesion,UserDashboard } from './Routes';
 import ProtectedRoute from './components/common/ProtectedRoute';
-import { setupInterceptors } from './api/axios';
+
 import { useEffect } from 'react';
 
 
 function AppContent() {
-  const auth = useAuth();
+  const { loading } = useAuth();
 
-  useEffect(() => {
-    setupInterceptors(auth);
-  }, [auth]);
+  if (loading) return <div>Loading...</div>;
 
   return (
     <Routes>
@@ -34,6 +32,7 @@ function AppContent() {
     </Routes>
   );
 }
+
 
 function App() {
   return (
